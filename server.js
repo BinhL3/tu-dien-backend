@@ -21,8 +21,15 @@ app.post('/api/words', async (req, res) => {
 })
 
 app.get('/api/words', async (req, res) => {
+  const limit = parseInt(req.query.limit, 10) || 10;
+  const offset = parseInt(req.query.offset, 10) || 0; 
+
   try {
-    const words = await Word.findAll();
+    const words = await Word.findAll({
+      limit: limit,
+      offset: offset
+    });
+
     res.json(words);
   } catch (err) {
     res.status(500).json({ error: err.message });
