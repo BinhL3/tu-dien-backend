@@ -3,7 +3,8 @@ const express = require('express');
 const app = express();
 const Word = require('./models/Word');
 const PORT = process.env.PORT || 8000;
-
+const cors = require('cors');
+app.use(cors());
 app.use(express.json());
 
 Word.sync()
