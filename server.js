@@ -24,7 +24,7 @@ app.get('/api/words/title/:title', async (req, res) => {
   const { title } = req.params;
 
   try {
-    const word = await Word.findOne({ where: { title } });
+    const word = await Word.findAll({ where: { title } });
     if (!word) {
       return res.status(404).json({ error: 'Word not found' });
     }
