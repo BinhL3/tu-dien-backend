@@ -4,6 +4,7 @@ const app = express();
 const Word = require('./models/Word');
 const PORT = process.env.PORT || 8000;
 const cors = require('cors');
+const { Sequelize } = require('sequelize');
 app.use(cors());
 app.use(express.json());
 
@@ -17,6 +18,20 @@ app.post('/api/words', async (req, res) => {
     res.status(201).json(word);
   } catch (err) {
     res.status(500).json({error: err.message}); 
+  }
+})
+
+app.get('/api/random', async (req, res) => {
+  try {
+    const word = await Word.findOne({ order: Sequelize.literal('RANDOM()')});
+
+    if (!word) {
+      return res.status(404).json({error: 'No words found'});
+    }
+
+    res.json(word);
+  } catch (err) {
+    res.status(500).json({error: err.message});
   }
 })
 
@@ -56,6 +71,7 @@ app.get('/api/words', async (req, res) => {
 app.get('/', (req, res) => {
   res.send('Hello from Express!');
 });
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
