@@ -21,6 +21,30 @@ app.post('/api/words', async (req, res) => {
   }
 })
 
+app.post('/api/add', async (req, res) => {
+  const { title, definition, example, author } = req.body;
+  const date = new Date();
+
+  if (!title || !definition || !author || !example) {
+    return res.status(400).json({ error: 'Title, definition, author, and example are required' });
+  }
+
+  try {
+    const newWord = await Word.create({
+      title,
+      definition,
+      example: Array.isArray(example) ? example : [example],
+      author,
+      date,
+    });
+
+    res.status(201).json(newWord);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 app.get('/api/random', async (req, res) => {
   try {
     const word = await Word.findOne({ order: Sequelize.literal('RANDOM()')});
