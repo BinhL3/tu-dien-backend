@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const Word = require('./models/Word');
+const Word = require('./app/models/Word');
 const PORT = process.env.PORT || 8000;
 const cors = require('cors');
 const { Sequelize } = require('sequelize');
@@ -45,6 +45,7 @@ app.post('/api/add', async (req, res) => {
 });
 
 
+
 app.get('/api/random', async (req, res) => {
   try {
     const word = await Word.findOne({ order: Sequelize.literal('RANDOM()')});
@@ -74,7 +75,6 @@ app.get('/api/words/title/:title', async (req, res) => {
 }); 
 
 // curl -X GET "http://localhost:8000/api/words/title/Ph%C3%B4ng%20b%E1%BA%A1t"
-
 
 app.get('/api/words', async (req, res) => {
   const limit = parseInt(req.query.limit, 10) || 10;
