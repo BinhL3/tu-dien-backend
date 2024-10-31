@@ -13,25 +13,9 @@ const Role = db.role;
 
 db.sequelize.sync({force: true}).then(() => {
   console.log("Drop and resync db");
-  initial();
+  // initial();
 })
 
-function initial() {
-  Role.create({
-    id: 1,
-    name: "user"
-  });
- 
-  Role.create({
-    id: 2,
-    name: "moderator"
-  });
- 
-  Role.create({
-    id: 3,
-    name: "admin"
-  });
-}
 
 Word.sync()
   .then(() => console.log('Database synced'))
