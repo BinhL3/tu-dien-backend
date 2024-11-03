@@ -1,5 +1,4 @@
 const config = require("../config/db.config.js");
-
 const Sequelize = require("sequelize");
 
 const sequelize = new Sequelize(
@@ -26,10 +25,17 @@ db.sequelize = sequelize;
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
 
-// Association between role and user
+// Corrected Association between User and Role
+db.user.belongsToMany(db.role, {
+    through: "user_roles",
+    as: "roles",          // Alias for retrieving roles from User
+    foreignKey: "userId"
+});
+
 db.role.belongsToMany(db.user, {
     through: "user_roles",
-    as: "users",  // Alias for clarity
+    as: "users",          // Alias for retrieving users from Role
+    foreignKey: "roleId"
 });
 
 // Self-association on the role model
