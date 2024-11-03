@@ -1,4 +1,4 @@
-const config = require("../config/db.config.js")
+const config = require("../config/db.config.js");
 
 const Sequelize = require("sequelize");
 
@@ -15,24 +15,36 @@ const sequelize = new Sequelize(
             acquire: config.pool.acquire,
             idle: config.pool.idle
         }
-    }    
+    }
 );
 
-const db = {}
+const db = {};
 
 db.Sequelize = sequelize;
-db.sequelize =  Sequelize;
+db.sequelize = sequelize;
 
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
 
+// Association between role and user
 db.role.belongsToMany(db.user, {
-    through: "user_roles"
+    through: "user_roles",
+    as: "users",  // Alias for clarity
 });
 
+// Self-association on the role model
+db.role.belongsToMany(db.role, {
+    through: "role_hierarchy", // or any table name you choose for the self-association
+    as: "parentRoles",        // Alias for one side of the association
+    foreignKey: "childRoleId",
+    otherKey: "parentRoleId"
+});
 
 db.role.belongsToMany(db.role, {
-    through: "user_roles"
+    through: "role_hierarchy",
+    as: "childRoles",         // Alias for the other side of the association
+    foreignKey: "parentRoleId",
+    otherKey: "childRoleId"
 });
 
 db.ROLES = ["user", "admin", "moderator"];

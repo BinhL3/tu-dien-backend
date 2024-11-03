@@ -11,10 +11,31 @@ app.use(express.json());
 const db = require("./app/models");
 const Role = db.role;
 
+require('./app/routes/auth.routes')(app);
+require('./app/routes/user.routes')(app);
+
 db.sequelize.sync({force: true}).then(() => {
   console.log("Drop and resync db");
-  // initial();
+  initial();
 })
+
+
+function initial() {
+  Role.create({
+    id: 1,
+    name: "user"
+  });
+ 
+  Role.create({
+    id: 2,
+    name: "moderator"
+  });
+ 
+  Role.create({
+    id: 3,
+    name: "admin"
+  });
+}
 
 
 Word.sync()
