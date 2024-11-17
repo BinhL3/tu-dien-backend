@@ -5,7 +5,9 @@ const Word = require('./app/models/Word');
 const PORT = process.env.PORT || 8000;
 const cors = require('cors');
 const { Sequelize } = require('sequelize');
-app.use(cors());
+app.use(cors({
+  origin: 'http://tu-dien-frontend.s3-website.us-east-2.amazonaws.com/',
+}));
 app.use(express.json());
 
 const db = require("./app/models");
