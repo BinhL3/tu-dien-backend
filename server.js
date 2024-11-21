@@ -21,7 +21,6 @@ db.sequelize.sync({force: true}).then(() => {
   initial();
 })
 
-
 function initial() {
   Role.create({
     id: 1,
@@ -38,7 +37,6 @@ function initial() {
     name: "admin"
   });
 }
-
 
 Word.sync()
   .then(() => console.log('Database synced'))
@@ -75,7 +73,6 @@ app.post('/api/add', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
 
 
 app.get('/api/random', async (req, res) => {
